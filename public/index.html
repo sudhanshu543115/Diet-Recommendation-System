@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diet Recommendation System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-apple-alt"></i>
+                <h1>DietAI</h1>
+            </div>
+            <p class="tagline">Your Personal Nutrition Assistant</p>
+        </header>
+
+        <main class="main-content">
+            <!-- Input Form Section -->
+            <section class="input-section" id="inputSection">
+                <h2>Get Your Personalized Diet Plan</h2>
+                <form id="dietForm" class="diet-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="weight">Weight (kg)</label>
+                            <input type="number" id="weight" name="weight" step="0.1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="height">Height (cm)</label>
+                            <input type="number" id="height" name="height" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="age">Age</label>
+                            <input type="number" id="age" name="age" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select id="gender" name="gender" required>
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="activityLevel">Activity Level</label>
+                            <select id="activityLevel" name="activityLevel" required>
+                                <option value="">Select Activity Level</option>
+                                <option value="sedentary">Sedentary (Little or no exercise)</option>
+                                <option value="lightlyActive">Lightly Active (Light exercise 1-3 days/week)</option>
+                                <option value="moderatelyActive">Moderately Active (Moderate exercise 3-5 days/week)</option>
+                                <option value="veryActive">Very Active (Hard exercise 6-7 days/week)</option>
+                                <option value="extremelyActive">Extremely Active (Very hard exercise, physical job)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="goal">Goal</label>
+                            <select id="goal" name="goal" required>
+                                <option value="">Select Goal</option>
+                                <option value="weightLoss">Weight Loss</option>
+                                <option value="muscleGain">Muscle Gain</option>
+                                <option value="maintenance">Maintenance</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-calculator"></i>
+                        Calculate Diet Plan
+                    </button>
+                </form>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-header">
+                    <h2>Your Personalized Diet Plan</h2>
+                    <button class="back-btn" onclick="showInputSection()">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Calculator
+                    </button>
+                </div>
+
+                <div class="results-grid">
+                    <!-- BMI and Basic Info -->
+                    <div class="info-card">
+                        <h3>Your Health Metrics</h3>
+                        <div class="metrics-grid">
+                            <div class="metric">
+                                <span class="metric-label">BMI</span>
+                                <span class="metric-value" id="bmiValue">-</span>
+                                <span class="metric-category" id="bmiCategory">-</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">BMR</span>
+                                <span class="metric-value" id="bmrValue">-</span>
+                                <span class="metric-unit">calories/day</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Daily Calories</span>
+                                <span class="metric-value" id="dailyCalories">-</span>
+                                <span class="metric-unit">calories/day</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Macro Distribution -->
+                    <div class="info-card">
+                        <h3>Macro Distribution</h3>
+                        <div class="macros-container">
+                            <div class="macro-item">
+                                <div class="macro-bar">
+                                    <div class="macro-fill protein-fill" id="proteinBar"></div>
+                                </div>
+                                <div class="macro-info">
+                                    <span class="macro-name">Protein</span>
+                                    <span class="macro-amount" id="proteinAmount">-</span>
+                                </div>
+                            </div>
+                            <div class="macro-item">
+                                <div class="macro-bar">
+                                    <div class="macro-fill carbs-fill" id="carbsBar"></div>
+                                </div>
+                                <div class="macro-info">
+                                    <span class="macro-name">Carbs</span>
+                                    <span class="macro-amount" id="carbsAmount">-</span>
+                                </div>
+                            </div>
+                            <div class="macro-item">
+                                <div class="macro-bar">
+                                    <div class="macro-fill fat-fill" id="fatBar"></div>
+                                </div>
+                                <div class="macro-info">
+                                    <span class="macro-name">Fat</span>
+                                    <span class="macro-amount" id="fatAmount">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Diet Plan Details -->
+                <div class="diet-plan-card">
+                    <h3 id="dietPlanName">Diet Plan</h3>
+                    <p id="dietPlanDescription">Description</p>
+                    
+                    <div class="meals-container">
+                        <div class="meal-section">
+                            <h4><i class="fas fa-sun"></i> Breakfast</h4>
+                            <div class="meal-options" id="breakfastOptions"></div>
+                        </div>
+                        <div class="meal-section">
+                            <h4><i class="fas fa-cloud-sun"></i> Lunch</h4>
+                            <div class="meal-options" id="lunchOptions"></div>
+                        </div>
+                        <div class="meal-section">
+                            <h4><i class="fas fa-moon"></i> Dinner</h4>
+                            <div class="meal-options" id="dinnerOptions"></div>
+                        </div>
+                        <div class="meal-section">
+                            <h4><i class="fas fa-coffee"></i> Snacks</h4>
+                            <div class="meal-options" id="snacksOptions"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Food Database -->
+                <div class="food-database-card">
+                    <h3>Food Database</h3>
+                    <div class="food-tabs">
+                        <button class="food-tab active" data-category="proteins">Proteins</button>
+                        <button class="food-tab" data-category="carbs">Carbohydrates</button>
+                        <button class="food-tab" data-category="fats">Healthy Fats</button>
+                    </div>
+                    <div class="food-list" id="foodList"></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Loading Spinner -->
+        <div class="loading-spinner" id="loadingSpinner" style="display: none;">
+            <div class="spinner"></div>
+            <p>Calculating your personalized diet plan...</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
